@@ -1,8 +1,8 @@
 const fakeStoreURL = "https://fakestoreapi.com";
 
 export default function () {
-    const getProducts = () => {
-        const respone = useFetch(`${fakeStoreURL}/products`);
+    const getProducts = async () => {
+        const respone = await $fetch(`${fakeStoreURL}/products`);
         return respone;
     };
 

@@ -1,11 +1,11 @@
 <template>
-    <header class="bg-white">
+    <header class="bg-primary">
         <Header />
     </header>
-    <main class="container mx-auto">
+    <main>
         <slot />
     </main>
-    <footer class="bg-white">
+    <footer class="bg-primary">
         <Footer />
     </footer>
 </template>
