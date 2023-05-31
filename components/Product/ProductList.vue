@@ -10,7 +10,7 @@
         >
             <NuxtLink :to="`product/${product.id}`">
                 <div
-                    class="absolute top-1 right-1 lg:top-2 lg:right-2 bg-primary group-hover:bg-primaryLighter w-fit py-1 px-2 rounded-full z-50 scale-90 lg:scale-100"
+                    class="absolute top-1 right-1 lg:top-2 lg:right-2 bg-primary group-hover:bg-primaryLighter transition-all w-fit py-1 px-2 rounded-full z-20 scale-90 lg:scale-100"
                 >
                     <p
                         class="pointer-events-none block text-xs font-medium text-white"
@@ -24,7 +24,7 @@
                     <img
                         :src="product?.image"
                         alt=""
-                        class="pointer-events-none object-contain object-center group-hover:opacity-75 scale-[.55]"
+                        class="pointer-events-none object-contain object-center group-hover:opacity-75 scale-[.55] transition-all"
                     />
                     <button
                         type="button"

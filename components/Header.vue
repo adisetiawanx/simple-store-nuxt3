@@ -6,17 +6,24 @@
         <NuxtLink to="/" class="-m-1.5 p-1.5">
             <h1 class="text-2xl font-medium text-gray-100">Simple Store</h1>
         </NuxtLink>
-        <div class="flex lg:hidden">
-            <button
-                type="button"
-                class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-100"
-                @click="mobileMenuOpen = true"
-            >
-                <span class="sr-only">Open main menu</span>
-                <Bars3Icon class="h-6 w-6" aria-hidden="true" />
-            </button>
+        <div class="flex items-center gap-5">
+            <ShoppingCartIcon
+                @click="emit('openCart')"
+                class="lg:hidden w-7 h-7 text-white hover:bg-white hover:text-primary cursor-pointer rounded-full p-1 transition-all"
+            />
+            <div class="flex lg:hidden">
+                <button
+                    type="button"
+                    class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-100"
+                    @click="mobileMenuOpen = true"
+                >
+                    <span class="sr-only">Open main menu</span>
+
+                    <Bars3Icon class="h-6 w-6" aria-hidden="true" />
+                </button>
+            </div>
         </div>
-        <div class="hidden lg:flex lg:gap-x-12">
+        <div class="hidden lg:flex lg:gap-x-12 items-center">
             <NuxtLink
                 v-for="item in navigation"
                 :key="item.name"
@@ -24,6 +31,10 @@
                 class="text-sm font-semibold leading-6 text-gray-100"
                 >{{ item.name }}</NuxtLink
             >
+            <ShoppingCartIcon
+                @click="emit('openCart')"
+                class="w-8 h-8 text-white hover:bg-white hover:text-primary cursor-pointer rounded-full p-1 transition-all"
+            />
         </div>
     </nav>
     <ClientOnly>
@@ -33,14 +44,15 @@
             @close="mobileMenuOpen = false"
             :open="mobileMenuOpen"
         >
-            <div class="fixed inset-0 z-10" />
+            <div class="fixed inset-0 z-[1000]" />
             <DialogPanel
-                class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+                class="fixed inset-y-0 right-0 z-[1000] w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
             >
                 <div class="flex items-center justify-between">
                     <NuxtLink to="/" class="-m-1.5 p-1.5">
                         <h1 class="text-2xl font-medium">Simple Store</h1>
                     </NuxtLink>
+
                     <button
                         type="button"
                         class="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -71,8 +83,13 @@
 <script setup>
 import { ref } from "vue";
 import { Dialog, DialogPanel } from "@headlessui/vue";
-import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
+import {
+    Bars3Icon,
+    XMarkIcon,
+    ShoppingCartIcon,
+} from "@heroicons/vue/24/outline";
 
+const emit = defineEmits(["openCart"]);
 const navigation = [{ name: "Products", href: "/products" }];
 
 const mobileMenuOpen = ref(false);
