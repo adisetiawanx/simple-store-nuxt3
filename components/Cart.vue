@@ -37,6 +37,7 @@
                                 class="flex w-full max-w-3xl transform text-left text-base transition sm:my-8"
                             >
                                 <form
+                                    v-if="products.length > 0"
                                     class="relative flex w-full flex-col overflow-hidden bg-white pb-8 pt-6 sm:rounded-lg sm:pb-6 lg:py-8"
                                 >
                                     <div
@@ -111,7 +112,7 @@
                                                     <p
                                                         class="row-span-2 row-end-2 font-medium text-gray-900 sm:order-1 sm:ml-6 sm:w-1/3 sm:flex-none sm:text-right"
                                                     >
-                                                        {{ product.price }}$
+                                                        ${{ product.price }}
                                                     </p>
                                                     <div
                                                         class="ml-2 flex items-center sm:block sm:flex-none sm:text-center"
@@ -124,10 +125,25 @@
                                                                 product.title
                                                             }}</label
                                                         >
-                                                        <p>1</p>
+                                                        <div
+                                                            class="border py-1"
+                                                        >
+                                                            <p
+                                                                class="font-medium"
+                                                            >
+                                                                {{
+                                                                    product.quantity
+                                                                }}
+                                                            </p>
+                                                        </div>
 
                                                         <div class="space-x-2">
                                                             <button
+                                                                @click="
+                                                                    decreaseQuantity(
+                                                                        product.id
+                                                                    )
+                                                                "
                                                                 type="button"
                                                                 class="border px-5 shadow-sm font-medium rounded-full text-white bg-primary hover:bg-primaryLighter"
                                                             >
@@ -137,6 +153,11 @@
                                                                 >
                                                             </button>
                                                             <button
+                                                                @click="
+                                                                    increaseQuantity(
+                                                                        product.id
+                                                                    )
+                                                                "
                                                                 type="button"
                                                                 class="border px-5 shadow-sm font-medium sm:ml-0 sm:mt-2 rounded-full text-white bg-primary hover:bg-primaryLighter"
                                                             >
@@ -181,35 +202,24 @@
                                                         <dd
                                                             class="font-medium text-gray-900"
                                                         >
-                                                            $262.00
+                                                            ${{
+                                                                order.subTotal
+                                                            }}
                                                         </dd>
                                                     </div>
+
                                                     <div
                                                         class="flex items-center justify-between py-4"
                                                     >
                                                         <dt
                                                             class="text-gray-600"
                                                         >
-                                                            Shipping
+                                                            Tax (10%)
                                                         </dt>
                                                         <dd
                                                             class="font-medium text-gray-900"
                                                         >
-                                                            $5.00
-                                                        </dd>
-                                                    </div>
-                                                    <div
-                                                        class="flex items-center justify-between py-4"
-                                                    >
-                                                        <dt
-                                                            class="text-gray-600"
-                                                        >
-                                                            Tax
-                                                        </dt>
-                                                        <dd
-                                                            class="font-medium text-gray-900"
-                                                        >
-                                                            $53.40
+                                                            ${{ order.tax }}
                                                         </dd>
                                                     </div>
                                                     <div
@@ -223,7 +233,7 @@
                                                         <dd
                                                             class="text-base font-medium text-gray-900"
                                                         >
-                                                            $320.40
+                                                            ${{ order.total }}
                                                         </dd>
                                                     </div>
                                                 </dl>
@@ -242,6 +252,40 @@
                                         </button>
                                     </div>
                                 </form>
+                                <div
+                                    v-else
+                                    class="bg-white w-full pb-8 pt-6 sm:rounded-lg sm:pb-6 lg:py-8"
+                                >
+                                    <div
+                                        class="flex items-center justify-between px-4 sm:px-6 lg:px-8"
+                                    >
+                                        <h2
+                                            class="text-lg font-medium text-gray-900"
+                                        >
+                                            Shopping Cart
+                                        </h2>
+                                        <button
+                                            type="button"
+                                            class="text-gray-400 hover:text-gray-500"
+                                            @click="emit('closeCart')"
+                                        >
+                                            <span class="sr-only">Close</span>
+                                            <XMarkIcon
+                                                class="h-6 w-6"
+                                                aria-hidden="true"
+                                            />
+                                        </button>
+                                    </div>
+                                    <div
+                                        class="mt-10 bg-gray-100 mx-5 py-5 rounded"
+                                    >
+                                        <p
+                                            class="text-center font-medium text-xl"
+                                        >
+                                            No Product.
+                                        </p>
+                                    </div>
+                                </div>
                             </DialogPanel>
                         </TransitionChild>
                     </div>
@@ -251,7 +295,7 @@
     </ClientOnly>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import {
     Dialog,
     DialogPanel,
@@ -263,11 +307,48 @@ import { XMarkIcon } from "@heroicons/vue/24/outline";
 const props = defineProps(["isCartOpen"]);
 const emit = defineEmits(["closeCart"]);
 
-const { getProcutsInCart } = useCart();
-const products = ref([]);
+const { getProcutsInCart, increaseQuantityProduct, decreaseQuantityProduct } =
+    useCart();
+const products = ref<Product[]>([]);
+const order = ref({
+    subTotal: 0,
+    tax: 0.1,
+    total: 0,
+});
+
+const increaseQuantity = (id: string) => {
+    products.value.forEach((p: Product) => {
+        if (p.id === id) {
+            p.quantity!++;
+        }
+    });
+    increaseQuantityProduct(id);
+};
+
+const decreaseQuantity = (id: string) => {
+    products.value.forEach((p: Product) => {
+        if (p.id === id) {
+            if (p.quantity! > 1) {
+                p.quantity!--;
+            }
+        }
+    });
+    decreaseQuantityProduct(id);
+};
 
 onMounted(() => {
-    console.info(getProcutsInCart());
     products.value = getProcutsInCart();
+    if (products.value) {
+        products.value.forEach((p: Product) => {
+            order.value.subTotal += p.price * p.quantity!;
+        });
+
+        order.value.subTotal = Math.ceil(order.value.subTotal);
+        order.value.tax = Math.ceil(order.value.subTotal * order.value.tax);
+
+        order.value.total = order.value.subTotal + order.value.tax;
+    } else {
+        products.value = [];
+    }
 });
 </script>
