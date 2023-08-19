@@ -1,8 +1,12 @@
-# Tech That I Use:
+## Tech That I Use:
 
 - Nuxtjs 3
 - @nuxtjs/tailwindcss
 - Pinia
+
+## API
+
+- https://fakestoreapi.com
 
 ## Commands
 
