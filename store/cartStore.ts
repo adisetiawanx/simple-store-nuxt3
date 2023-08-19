@@ -1,5 +1,13 @@
 import { defineStore } from "pinia";
 
+const addCartToLocalStorage = (products: Product[]) => {
+  const cart = localStorage.getItem("cart");
+
+  if (cart) {
+    localStorage.setItem("cart", JSON.stringify({ products }));
+  }
+};
+
 export const useCartStore = defineStore("cart", {
   state: () => ({
     products: [] as Product[],
@@ -10,6 +18,9 @@ export const useCartStore = defineStore("cart", {
     },
   },
   actions: {
+    initialProductToCart(products: Product[]) {
+      this.products = products;
+    },
     addProductToCart(product: Product) {
       const isThere = this.products.find((p: Product) => p.id === product.id);
 
@@ -22,6 +33,7 @@ export const useCartStore = defineStore("cart", {
       } else {
         this.products.push({ ...product, quantity: 1 });
       }
+      addCartToLocalStorage(this.products);
     },
     increaseQuantityProduct(id: string) {
       this.products.forEach((product: Product) => {
@@ -29,6 +41,7 @@ export const useCartStore = defineStore("cart", {
           product.quantity!++;
         }
       });
+      addCartToLocalStorage(this.products);
     },
     decreaseQuantityProduct(id: string) {
       this.products.forEach((product: Product) => {
@@ -38,6 +51,7 @@ export const useCartStore = defineStore("cart", {
           }
         }
       });
+      addCartToLocalStorage(this.products);
     },
   },
 });

@@ -32,11 +32,11 @@
         >{{ item.name }}</NuxtLink
       >
       <div class="relative">
-        <span class="bg-white rounded-full absolute flex px-1.5 -top-3 -left-3"
-          ><p class="text-primary text-sm font-semibold">
-            {{ cartStore.totalQuantityAllProducts }}
-          </p></span
+        <span
+          class="text-primary text-sm font-semibold bg-white rounded-full absolute flex px-1.5 -top-3 -left-3"
         >
+          {{ cartStore.totalQuantityAllProducts }}
+        </span>
         <ShoppingCartIcon
           @click="emit('openCart')"
           class="w-8 h-8 text-white hover:bg-white hover:text-primary cursor-pointer rounded-full p-1 transition-all"
