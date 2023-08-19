@@ -1,42 +1,16 @@
-# Nuxt 3 Minimal Starter
+# Tech That I Use:
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+- Nuxtjs 3
+- @nuxtjs/tailwindcss
+- Pinia
 
-## Setup
+## Commands
 
-Make sure to install the dependencies:
+- npm install => install dependencies
+- npm run dev => start developtment server
+- npm run build => build the application for production
+- npm run preview => preview locally production build
 
-```bash
-# yarn
-yarn install
+## Live
 
-# npm
-npm install
-
-# pnpm
-pnpm install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- Link : https://simple-store-nuxt3.vercel.app
